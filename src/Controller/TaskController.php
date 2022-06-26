@@ -67,4 +67,17 @@ class TaskController extends AbstractController
             'task' => $task,
         ]);
     }
+
+    /**
+     * @Route("/tasks/{id}/toggle", name="task_toggle")
+     */
+    public function toggleTaskAction(Task $task, ManagerRegistry $managerRegistry)
+    {
+        $task->toggle(!$task->isDone());
+        $managerRegistry->getManager()->flush();
+
+        $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
+
+        return $this->redirectToRoute('task_list');
+    }
 }
