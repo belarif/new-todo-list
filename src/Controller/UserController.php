@@ -44,7 +44,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
-            return $this->redirectToRoute('app_user_list');
+            return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
@@ -70,7 +70,7 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
-            return $this->redirectToRoute('app_user_list');
+            return $this->redirectToRoute('user_list');
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
