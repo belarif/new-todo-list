@@ -72,14 +72,10 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 
-    /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
-     */
-    public function deleteTaskAction(Task $task, ManagerRegistry $managerRegistry)
+    #[Route('/tasks/{id}/delete', name: 'task_delete')]
+    public function deleteTaskAction(Task $task, TaskService $taskService)
     {
-        $em = $managerRegistry->getManager();
-        $em->remove($task);
-        $em->flush();
+        $taskService->deleteTask($task);
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 

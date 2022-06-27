@@ -37,4 +37,9 @@ class TaskService
     {
         $this->taskRepository->add($task, true);
     }
+
+    public function deleteTask($task)
+    {
+        $this->taskRepository->remove($task, true);
+    }
 }
