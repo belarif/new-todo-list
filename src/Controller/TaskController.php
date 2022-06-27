@@ -4,8 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
-use App\Repository\TaskRepository;
+use App\Service\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
@@ -13,12 +14,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class TaskController extends AbstractController
 {
-    /**
-     * @Route("/tasks", name="task_list")
-     */
-    public function listAction(ManagerRegistry $managerRegistry)
+
+    #[Route('/tasks', name: 'task_list', methods: ['GET'])]
+    public function listAction(TaskService $taskService): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $managerRegistry->getManager()->getRepository(Task::class)->findAll()]);
+        return $this->render('task/list.html.twig', ['tasks' => $taskService->tasksList()]);
     }
 
     /**
@@ -95,3 +95,4 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('task_list');
     }
 }
+
