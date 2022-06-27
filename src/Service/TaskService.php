@@ -27,4 +27,9 @@ class TaskService
     {
         $this->taskRepository->add($task, true);
     }
+
+    public function taskEdit($task)
+    {
+        $this->taskRepository->add($task, true);
+    }
 }
