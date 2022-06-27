@@ -10,13 +10,21 @@ class TaskService
 {
     private ManagerRegistry $managerRegistry;
 
-    public function __construct(ManagerRegistry $managerRegistry)
+    private TaskRepository $taskRepository;
+
+    public function __construct(ManagerRegistry $managerRegistry, TaskRepository $taskRepository)
     {
         $this->managerRegistry = $managerRegistry;
+        $this->taskRepository = $taskRepository;
     }
 
     public function tasksList()
     {
         return $this->managerRegistry->getManager()->getRepository(Task::class)->findAll();
+    }
+
+    public function taskCreate($task)
+    {
+        $this->taskRepository->add($task, true);
     }
 }
