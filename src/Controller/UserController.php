@@ -13,7 +13,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
-
     #[Route('/users', name: 'user_list', methods: ['GET'])]
     public function listAction(UserService $userService)
     {
@@ -47,10 +46,8 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @Route("/users/{id}/edit", name="user_edit")
-     */
-    public function editAction(User $user, Request $request, ManagerRegistry $managerRegistry, UserPasswordHasherInterface $passwordHasher)
+    #[Route('/users/{id}/edit', name: 'user_edit', methods: ['GET','POST'])]
+    public function editAction(User $user, Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
     {
         $form = $this->createForm(UserType::class, $user);
 
@@ -63,7 +60,7 @@ class UserController extends AbstractController
             );
             $user->setPassword($hashedPassword);
 
-            $managerRegistry->getManager()->flush();
+            $userService->userEdit($user);
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 

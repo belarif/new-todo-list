@@ -27,4 +27,10 @@ class UserService
     {
         $this->userRepository->add($user, true);
     }
+
+    public function userEdit($user)
+    {
+        $this->userRepository->add($user, true);
+    }
 }
+
