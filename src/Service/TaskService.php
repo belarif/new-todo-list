@@ -32,4 +32,9 @@ class TaskService
     {
         $this->taskRepository->add($task, true);
     }
+
+    public function toggleTask($task)
+    {
+        $this->taskRepository->add($task, true);
+    }
 }
