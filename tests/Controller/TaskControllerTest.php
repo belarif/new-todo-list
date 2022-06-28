@@ -41,7 +41,7 @@ final class TaskControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $crawler = $client->request('GET', '/tasks/4/edit');
+        $crawler = $client->request('GET', '/tasks/6/edit');
 
         $response = $client->getResponse();
 
@@ -58,7 +58,7 @@ final class TaskControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/tasks/4/toggle');
+        $client->request('GET', '/tasks/5/toggle');
 
         $task = new Task();
 
@@ -72,7 +72,7 @@ final class TaskControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/tasks/4/delete');
+        $client->request('GET', '/tasks/5/delete');
 
         self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('task_list')));
     }
