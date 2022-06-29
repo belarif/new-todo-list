@@ -13,13 +13,13 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
-    #[Route('/users', name: 'user_list', methods: ['GET'])]
+    #[Route('/users', name: 'app_user_list', methods: ['GET'])]
     public function listAction(UserService $userService)
     {
         return $this->render('user/list.html.twig', ['users' => $userService->usersList()]);
     }
 
-    #[Route('/users/create', name: 'user_create', methods: ['GET','POST'])]
+    #[Route('/users/create', name: 'app_user_create', methods: ['GET','POST'])]
     public function createAction(Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
     {
         $user = new User();
@@ -40,13 +40,13 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('app_user_list');
         }
 
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/users/{id}/edit', name: 'user_edit', methods: ['GET','POST'])]
+    #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET','POST'])]
     public function editAction(User $user, Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
     {
         $form = $this->createForm(UserType::class, $user);
@@ -64,20 +64,20 @@ class UserController extends AbstractController
 
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
-            return $this->redirectToRoute('user_list');
+            return $this->redirectToRoute('app_user_list');
         }
 
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 
-    #[Route('/users/{id}/delete', name: 'user_delete')]
+    #[Route('/users/{id}/delete', name: 'app_user_delete')]
     public function deleteAction(User $user, UserService $userService)
     {
         $userService->userDelete($user);
 
         $this->addFlash('success', "L'utilisateur a bien été supprimé.");
 
-        return $this->redirectToRoute('user_list');
+        return $this->redirectToRoute('app_user_list');
     }
 }
 
