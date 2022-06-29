@@ -52,4 +52,15 @@ final class UserControllerTest extends WebTestCase
         self::assertCount(1, $crawler->filter('input[id=user_email]'));
         self::assertNotNull($crawler->selectButton('submit'));
     }
+
+    public function test_it_should_delete_user()
+    {
+        $client = self::createClient();
+
+        $urlGenerator = $client->getContainer()->get('router');
+
+        $client->request('GET', '/users/17/delete');
+
+        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('user_list')));
+    }
 }
