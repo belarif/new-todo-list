@@ -31,7 +31,7 @@
 
             <img src="{{ asset('build/img/Logo_OpenClassrooms.png') }}" alt="OpenClassrooms" />
         </div>
-        {% if is_granted('ROLE_ADMIN') %}
+        {% if is_granted('ROLE_USER') %}
             <a href="{{ path('app_logout') }}" class="navbar-text navbar-right">Se déconnecter</a>
         {% else %}
             <a href="{{ path('app_login') }}" class="navbar-text navbar-right">Se connecter</a>
