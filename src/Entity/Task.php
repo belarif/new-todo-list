@@ -13,25 +13,25 @@ class Task
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    protected ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Vous devez saisir un titre.')]
-    private $title;
+    private ?string $title;
 
     #[ORM\Column(type: 'text')]
     #[Assert\NotBlank(message: 'Vous devez saisir du contenu.')]
-    private $content;
+    private ?string $content;
 
     #[ORM\Column(type: 'boolean')]
-    private $isDone;
+    private bool $isDone;
 
     #[ORM\Column(type: 'datetime')]
-    private $createdAt;
+    private DateTime $createdAt;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    private ?User $user;
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ class Task
         return $this->isDone;
     }
 
-    public function toggle(bool $flag)
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }
@@ -95,3 +95,4 @@ class Task
         return $this;
     }
 }
+
