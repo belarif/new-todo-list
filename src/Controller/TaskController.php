@@ -15,10 +15,16 @@ use Doctrine\Persistence\ManagerRegistry;
 class TaskController extends AbstractController
 {
 
-    #[Route('/tasks', name: 'app_task_list', methods: ['GET'])]
-    public function listAction(TaskService $taskService): Response
+    #[Route('/tasks_done', name: 'app_task_list_done', methods: ['GET'])]
+    public function listDoneAction(TaskService $taskService): Response
     {
-        return $this->render('task/list.html.twig', ['tasks' => $taskService->tasksList(), 'user' => $this->getUser()]);
+        return $this->render('task/tasks_list_done.html.twig', ['tasks' => $taskService->tasksList(), 'user' => $this->getUser()]);
+    }
+
+    #[Route('/tasks_not_done', name: 'app_task_list_not_done', methods: ['GET'])]
+    public function listNotDoneAction(TaskService $taskService): Response
+    {
+        return $this->render('task/tasks_list_not_done.html.twig', ['tasks' => $taskService->tasksList(), 'user' => $this->getUser()]);
     }
 
     #[Route('/tasks/create', name: 'app_task_create', methods: ['GET','POST'])]
@@ -35,7 +41,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
-            return $this->redirectToRoute('app_task_list');
+            return $this->redirectToRoute('app_task_list_not_done');
         }
 
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
@@ -53,7 +59,11 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            return $this->redirectToRoute('app_task_list');
+            if($task->isDone()) {
+                return $this->redirectToRoute('app_task_list_done');
+            }
+
+            return $this->redirectToRoute('app_task_list_not_done');
         }
 
         return $this->render('task/edit.html.twig', [
@@ -70,7 +80,7 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('app_task_list');
+        return $this->redirectToRoute('app_task_list_done');
     }
 
     #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
@@ -80,7 +90,8 @@ class TaskController extends AbstractController
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('app_task_list');
+        return $this->redirectToRoute('app_task_list_done');
     }
 }
+
 
