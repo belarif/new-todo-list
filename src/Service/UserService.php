@@ -32,5 +32,11 @@ class UserService
     {
         $this->userRepository->add($user, true);
     }
+
+    public function userDelete($user)
+    {
+        $this->userRepository->remove($user, true);
+    }
 }
+
 

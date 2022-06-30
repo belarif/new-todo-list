@@ -72,7 +72,7 @@ final class TaskControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/tasks/5/delete');
+        $client->request('GET', '/tasks/7/delete');
 
         self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('task_list')));
     }
