@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <div class="d-flex justify-content-end">
-                <a href="{{ path('app_task_list_not_done') }}" class="btn btn-primary">Retour à la liste des tâches non faites</a>
+                <a href="{{ path('app_task_list_not_done') }}" class="btn btn-secondary">Retour à la liste des tâches non faites</a>
             </div>
             {{ form_start(form, {'action' : path('app_task_create')}) }}
             {{ form_widget(form) }}
