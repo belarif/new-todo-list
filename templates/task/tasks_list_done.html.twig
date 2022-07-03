@@ -14,17 +14,31 @@
 
     <div class="row">
         {% for task in tasks %}
-            {% if task.user.username == user.username %}
-                {% if task.isDone %}
-                    <div class="col-sm-4 col-lg-4 col-md-4">
-                        <div class="thumbnail">
-                            <div class="caption">
-                                <h4 class="d-flex justify-content-end">
-                                    {% if task.isDone %}<i class="bi bi-check-lg"></i>{% else %}<i class="bi bi-x-lg"></i>{% endif %}
-                                </h4>
-                                <h4>{{ task.title }}</h4>
-                                <p>{{ task.content }}</p>
-                            </div>
+            {% if task.isDone %}
+                <div class="col-sm-4 col-lg-4 col-md-4">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h4 class="d-flex justify-content-end">
+                                {% if task.isDone %}<i class="bi bi-check-lg"></i>{% else %}<i class="bi bi-x-lg"></i>{% endif %}
+                            </h4>
+                            <h4>{{ task.title }}</h4>
+                            <p>{{ task.content }}</p>
+                        </div>
+
+                        {% if task.user == user %}
+                        <div>
+                            <a class="btn btn-danger btn-sm" href="{{ path('app_task_delete', {'id' : task.id }) }}">
+                                Supprimer
+                            </a>
+                            <a class="btn btn-success btn-sm" href="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                                {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                            </a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('app_task_edit', {'id' : task.id }) }}">
+                                Modifier
+                            </a>
+                        </div>
+                        {% else %}
+                            {% if is_granted('ROLE_ADMIN') %}
                             <div>
                                 <a class="btn btn-danger btn-sm" href="{{ path('app_task_delete', {'id' : task.id }) }}">
                                     Supprimer
@@ -36,9 +50,10 @@
                                     Modifier
                                 </a>
                             </div>
-                        </div>
+                        {% endif %}
+                    {% endif %}
                     </div>
-                {% endif %}
+                </div>
             {% endif %}
         {% else %}
             <div class="alert alert-warning mt-2" role="alert">
