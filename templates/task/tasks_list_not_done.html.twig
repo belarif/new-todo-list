@@ -14,7 +14,6 @@
 
     <div class="row">
         {% for task in tasks %}
-            {% if task.user.username == user.username %}
             {% if task.isDone == 0 %}
                 <div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail">
@@ -25,26 +24,42 @@
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.content }}</p>
                         </div>
-                        <div>
-                            <a class="btn btn-danger btn-sm" href="{{ path('app_task_delete', {'id' : task.id }) }}">
-                                Supprimer
-                            </a>
-                            <a class="btn btn-success btn-sm" href="{{ path('app_task_toggle', {'id' : task.id }) }}">
-                                {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
-                            </a>
-                            <a class="btn btn-primary btn-sm" href="{{ path('app_task_edit', {'id' : task.id }) }}">
-                                Modifier
-                            </a>
-                        </div>
+
+                        {% if task.user == user %}
+                            <div>
+                                <a class="btn btn-danger btn-sm" href="{{ path('app_task_delete', {'id' : task.id }) }}">
+                                    Supprimer
+                                </a>
+                                <a class="btn btn-success btn-sm" href="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                                    {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                                </a>
+                                <a class="btn btn-primary btn-sm" href="{{ path('app_task_edit', {'id' : task.id }) }}">
+                                    Modifier
+                                </a>
+                            </div>
+                        {% else %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <div>
+                                    <a class="btn btn-danger btn-sm" href="{{ path('app_task_delete', {'id' : task.id }) }}">
+                                        Supprimer
+                                    </a>
+                                    <a class="btn btn-success btn-sm" href="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                                        {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
+                                    </a>
+                                    <a class="btn btn-primary btn-sm" href="{{ path('app_task_edit', {'id' : task.id }) }}">
+                                        Modifier
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             {% endif %}
-            {% endif %}
-            {% else %}
-                <div class="alert alert-warning mt-2" role="alert">
-                    Il n'y a pas encore de tâche enregistrée.
-                </div>
-            {% endfor %}
+        {% else %}
+            <div class="alert alert-warning mt-2" role="alert">
+                Il n'y a pas encore de tâche enregistrée.
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
 

@@ -14,7 +14,10 @@ class RoleFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $roles = [RoleFixtures::ROLE_ADMIN, RoleFixtures::ROLE_USER];
+        $roles = [
+            RoleFixtures::ROLE_ADMIN,
+            RoleFixtures::ROLE_USER
+        ];
 
         foreach ($roles as $newRole) {
             $role = new Role();
@@ -25,4 +28,5 @@ class RoleFixtures extends Fixture
         }
     }
 }
+
 
