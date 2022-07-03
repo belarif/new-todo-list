@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div class="col-12">
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-end mb-5">
                 <a href="{{ path('app_task_create') }}" class="btn btn-primary mx-1">Créer une tâche</a>
                 <a href="{{ path('app_task_list_done') }}" class="btn btn-primary">Retour à la liste des tâches faites</a>
             </div>
@@ -20,7 +20,7 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <h4 class="d-flex justify-content-end">
-                                {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+                                {% if task.isDone %}<i class="bi bi-check-lg"></i>{% else %}<i class="bi bi-x-lg"></i>{% endif %}
                             </h4>
                             <h4>{{ task.title }}</h4>
                             <p>{{ task.content }}</p>
