@@ -16,7 +16,7 @@ class UserController extends AbstractController
     #[Route('/users', name: 'app_user_list', methods: ['GET'])]
     public function listAction(UserService $userService)
     {
-        return $this->render('user/tasks_list_not_done.html.twig', ['users' => $userService->usersList()]);
+        return $this->render('user/list.html.twig', ['users' => $userService->usersList()]);
     }
 
     #[Route('/users/create', name: 'app_user_create', methods: ['GET','POST'])]

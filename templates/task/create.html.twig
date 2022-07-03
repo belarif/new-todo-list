@@ -2,12 +2,16 @@
 
 {% block body %}
     <div class="row">
-        {{ form_start(form, {'action' : path('app_task_create')}) }}
+        <div class="col-12">
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_task_list_not_done') }}" class="btn btn-secondary">Retour à la liste des tâches non faites</a>
+            </div>
+            {{ form_start(form, {'action' : path('app_task_create')}) }}
             {{ form_widget(form) }}
-
-            <button type="submit" class="btn btn-success pull-right">Ajouter</button>
-        {{ form_end(form) }}
-
-        <a href="{{ path('app_task_list_not_done') }}" class="btn btn-primary">Retour à la liste des tâches</a>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success mt-2">Ajouter</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}
