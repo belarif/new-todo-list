@@ -5,6 +5,12 @@
 
 {% block body %}
     <div class="row">
+        {% for message in app.flashes('existing_user') %}
+            <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
         {{ form_start(form, {'action' : path('app_user_create')}) }}
             {{ form_widget(form) }}
             <div class="d-flex justify-content-end">

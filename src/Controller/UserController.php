@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UserService;
+use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function Sodium\add;
 
 class UserController extends AbstractController
 {
@@ -29,14 +31,21 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()
             );
             $user->setPassword($hashedPassword);
 
-            $userService->userCreate($user);
+            try {
+                $userService->userCreate($user);
+
+            } catch (Exception $e) {
+
+                $this->addFlash('existing_user', $e->getMessage());
+
+                return $this->redirectToRoute('app_user_create');
+            }
 
             $this->addFlash('success', "L'utilisateur a bien été ajouté.");
 
