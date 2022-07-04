@@ -20,14 +20,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 60, unique: true)]
     #[Assert\NotBlank(message: "Vous devez saisir un nom d'utilisateur.")]
+    #[Assert\Length(max: 60, maxMessage: "le nom d'utilisateur ne doit pas dépasser {{ limit }} caractères")]
     private ?string $username;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: "Vous devez saisir un mot de passe.")]
+    #[Assert\Length(max: 255, maxMessage: "le mot de passe ne doit pas dépasser {{ limit }} caractères")]
     private ?string $password;
 
     #[ORM\Column(type: 'string', length: 100)]
     #[Assert\NotBlank(message: "Vous devez saisir une adresse email.")]
     #[Assert\Email(message: "Le format de l'adresse n'est pas correcte.")]
+    #[Assert\Length(max: 60, maxMessage: "L'adresse email ne doit pas dépasser {{ limit }} caractères")]
     private ?string $email;
 
     #[ORM\ManyToMany(targetEntity: Role::class)]

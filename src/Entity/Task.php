@@ -17,6 +17,7 @@ class Task
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Vous devez saisir un titre.')]
+    #[Assert\Length(max: 255, maxMessage: "Le titre ne doit pas dépasser {{ limit }} caractères")]
     private ?string $title;
 
     #[ORM\Column(type: 'text')]
