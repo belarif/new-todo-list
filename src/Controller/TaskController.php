@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Task;
 use App\Form\TaskType;
+use App\Repository\TaskRepository;
 use App\Service\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,8 +49,10 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET','POST'])]
-    public function editAction(Task $task, Request $request, TaskService $taskService)
+    public function editAction(int $id, Request $request, TaskService $taskService, TaskRepository $taskRepository)
     {
+        $task = $taskRepository->getTask($id);
+
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -73,8 +76,10 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/toggle', name: 'app_task_toggle')]
-    public function toggleTaskAction(Task $task, TaskService $taskService)
+    public function toggleTaskAction(int $id, TaskService $taskService, TaskRepository $taskRepository)
     {
+        $task = $taskRepository->getTask($id);
+
         $task->toggle(!$task->isDone());
         $taskService->toggleTask($task);
 
@@ -84,8 +89,10 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
-    public function deleteTaskAction(Task $task, TaskService $taskService)
+    public function deleteTaskAction(int $id, TaskService $taskService, TaskRepository $taskRepository)
     {
+        $task = $taskRepository->getTask($id);
+
         $taskService->deleteTask($task);
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
