@@ -30,6 +30,14 @@ class SecurityController extends AbstractController
     {
         throw new Exception('Don\'t forget to activate logout in security.yaml');
     }
+
+    #[Route('/access_denied', name: 'app_access_denied', methods: ['GET'])]
+    public function accessDeniedHandler(): Response
+    {
+        return $this->render('error/access_denied.html.twig', [
+            'response' => "Vous n'etes pas autorisé à accéder à cette page"
+        ]);
+    }
 }
 
 

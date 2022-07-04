@@ -12,7 +12,7 @@ final class DefaultControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('homepage'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_homepage'));
 
         $response = $client->getResponse();
 

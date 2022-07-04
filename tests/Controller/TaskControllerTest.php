@@ -13,7 +13,7 @@ final class TaskControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('task_create'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_task_create'));
 
         $response = $client->getResponse();
 
@@ -23,13 +23,27 @@ final class TaskControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function test_it_should_display_tasks_list_page()
+    public function test_it_should_display_tasks_list_done_page()
     {
         $client = self::createClient();
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('task_list'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_task_list_done'));
+
+        $response = $client->getResponse();
+
+        self::assertTrue($response->isOk());
+        self::assertNotNull($crawler->selectLink('Créer une tâche'));
+    }
+
+    public function test_it_should_display_tasks_list_not_done_page()
+    {
+        $client = self::createClient();
+
+        $urlGenerator = $client->getContainer()->get('router');
+
+        $crawler = $client->request('GET', $urlGenerator->generate('app_task_list_not_done'));
 
         $response = $client->getResponse();
 
@@ -63,7 +77,7 @@ final class TaskControllerTest extends WebTestCase
         $task = new Task();
 
         self::assertTrue(!$task->isDone());
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('task_list')));
+        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
     }
 
     public function test_it_should_delete_task()
@@ -74,6 +88,6 @@ final class TaskControllerTest extends WebTestCase
 
         $client->request('GET', '/tasks/7/delete');
 
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('task_list')));
+        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
     }
 }

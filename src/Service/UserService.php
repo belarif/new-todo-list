@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Exception\UserException;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,8 +24,15 @@ class UserService
         return $this->managerRegistry->getRepository(User::class)->findAll();
     }
 
-    public function userCreate($user)
+    /**
+     * @throws UserException
+     */
+    public function userCreate(User $user)
     {
+        if($this->userRepository->findBy(['username' => $user->getUsername()])) {
+            throw UserException::userExists($user);
+        }
+
         $this->userRepository->add($user, true);
     }
 

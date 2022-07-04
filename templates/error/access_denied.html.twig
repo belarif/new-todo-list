@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex align-items-center justify-content-center">
+                <div>
+                    <h1>{{ response }}</h1>
+                    <div class="text-end">
+                        <a href="{{ path('app_homepage') }}">Retour à l'accueil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
