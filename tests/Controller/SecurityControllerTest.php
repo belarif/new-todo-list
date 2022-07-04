@@ -12,7 +12,7 @@ final class SecurityControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('login'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_login'));
 
         $response = $client->getResponse();
 

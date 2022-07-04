@@ -12,7 +12,7 @@ final class UserControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('user_create'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_user_create'));
 
         $response = $client->getResponse();
         self::assertTrue($response->isOk());
@@ -30,7 +30,7 @@ final class UserControllerTest extends WebTestCase
 
         $urlGenerator = $client->getContainer()->get('router');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('user_list'));
+        $crawler = $client->request('GET', $urlGenerator->generate('app_user_list'));
 
         $response = $client->getResponse();
         self::assertTrue($response->isOk());
@@ -61,6 +61,6 @@ final class UserControllerTest extends WebTestCase
 
         $client->request('GET', '/users/17/delete');
 
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('user_list')));
+        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_user_list')));
     }
 }
