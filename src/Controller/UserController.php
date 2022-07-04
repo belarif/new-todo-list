@@ -5,13 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UserService;
+use App\Repository\UserRepository;
 use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use function Sodium\add;
 
 class UserController extends AbstractController
 {
@@ -56,8 +56,16 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET','POST'])]
-    public function editAction(User $user, Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
-    {
+    public function editAction(
+        int $id,
+        Request $request,
+        UserService $userService,
+        UserPasswordHasherInterface $passwordHasher,
+        UserRepository $userRepository
+    ){
+
+        $user = $userRepository->getUser($id);
+
         $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
@@ -80,8 +88,10 @@ class UserController extends AbstractController
     }
 
     #[Route('/users/{id}/delete', name: 'app_user_delete')]
-    public function deleteAction(User $user, UserService $userService)
+    public function deleteAction(int $id, UserService $userService, UserRepository $userRepository)
     {
+        $user = $userRepository->getUser($id);
+
         $userService->userDelete($user);
 
         $this->addFlash('success', "L'utilisateur a bien été supprimé.");
@@ -89,4 +99,5 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user_list');
     }
 }
+
 

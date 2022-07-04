@@ -10,4 +10,9 @@ class UserException extends Exception
     {
         return new self("L'utilisateur ". $user->getUsername() . " est déjà existant !");
     }
+
+    public static function notUserExists($id)
+    {
+        return new self("L'utilisateur d'id " .$id. " n'existe pas");
+    }
 }
