@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Exception\UserException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -55,5 +56,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->add($user, true);
     }
+
+    /**
+     * @throws UserException
+     */
+    public function getUser($id): User
+    {
+        $user = $this->createQueryBuilder('u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+
+        if (!$user) {
+            throw UserException::notUserExists($id);
+        }
+
+        return $user[0];
+    }
 }
+
 
