@@ -58,5 +58,3 @@ class TaskRepository extends ServiceEntityRepository
         return $user[0];
     }
 }
-
-

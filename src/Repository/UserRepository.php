@@ -75,5 +75,3 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $user[0];
     }
 }
-
-

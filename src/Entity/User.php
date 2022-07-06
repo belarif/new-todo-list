@@ -24,12 +24,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $username;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank(message: "Vous devez saisir un mot de passe.")]
-    #[Assert\Length(max: 255, maxMessage: "le mot de passe ne doit pas dépasser {{ limit }} caractères")]
+    #[Assert\NotBlank(message: 'Vous devez saisir un mot de passe.')]
+    #[Assert\Length(max: 255, maxMessage: 'le mot de passe ne doit pas dépasser {{ limit }} caractères')]
     private ?string $password;
 
     #[ORM\Column(type: 'string', length: 100)]
-    #[Assert\NotBlank(message: "Vous devez saisir une adresse email.")]
+    #[Assert\NotBlank(message: 'Vous devez saisir une adresse email.')]
     #[Assert\Email(message: "Le format de l'adresse n'est pas correcte.")]
     #[Assert\Length(max: 60, maxMessage: "L'adresse email ne doit pas dépasser {{ limit }} caractères")]
     private ?string $email;
@@ -85,9 +85,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles->toArray());
     }
 
-    /**
-     * @return Collection
-     */
     public function getRole(): Collection
     {
         return $this->roles;
@@ -120,7 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials()
     {
-
     }
 
     public function getEmail(): ?string
@@ -181,4 +177,3 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
-

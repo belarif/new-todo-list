@@ -39,4 +39,3 @@ class RoleRepository extends ServiceEntityRepository
         }
     }
 }
-

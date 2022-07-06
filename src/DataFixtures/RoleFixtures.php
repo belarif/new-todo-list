@@ -16,7 +16,7 @@ class RoleFixtures extends Fixture
     {
         $roles = [
             RoleFixtures::ROLE_ADMIN,
-            RoleFixtures::ROLE_USER
+            RoleFixtures::ROLE_USER,
         ];
 
         foreach ($roles as $newRole) {
@@ -28,5 +28,3 @@ class RoleFixtures extends Fixture
         }
     }
 }
-
-
