@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class UserControllerTest extends WebTestCase
 {
-    public function test_it_should_display_user_create_page()
+    public function testItShouldDisplayUserCreatePage()
     {
         $client = self::createClient();
 
@@ -24,7 +24,7 @@ final class UserControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function test_it_should_display_users_list_page()
+    public function testItShouldDisplayUsersListPage()
     {
         $client = self::createClient();
 
@@ -37,7 +37,7 @@ final class UserControllerTest extends WebTestCase
         self::assertSame('Liste des utilisateurs', $crawler->filter('h1')->first()->text());
     }
 
-    public function test_it_should_display_user_edit_page()
+    public function testItShouldDisplayUserEditPage()
     {
         $client = self::createClient();
 
@@ -53,7 +53,7 @@ final class UserControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function test_it_should_delete_user()
+    public function testItShouldDeleteUser()
     {
         $client = self::createClient();
 

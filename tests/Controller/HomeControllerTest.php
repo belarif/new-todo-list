@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class HomeControllerTest extends WebTestCase
 {
-    public function test_it_should_display_homepage(): void
+    public function testItShouldDisplayHomepage(): void
     {
         $client = self::createClient();
 

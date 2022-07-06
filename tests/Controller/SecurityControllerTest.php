@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class SecurityControllerTest extends WebTestCase
 {
-    public function test_it_should_display_login_page(): void
+    public function testItShouldDisplayLoginPage(): void
     {
         $client = self::createClient();
 
