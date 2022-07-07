@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Task;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class TaskControllerTest extends WebTestCase
@@ -10,6 +11,8 @@ final class TaskControllerTest extends WebTestCase
     public function testItShouldDisplayTaskCreatePage()
     {
         $client = self::createClient();
+
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'user1']));
 
         $urlGenerator = $client->getContainer()->get('router');
 
@@ -27,6 +30,8 @@ final class TaskControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'user1']));
+
         $urlGenerator = $client->getContainer()->get('router');
 
         $crawler = $client->request('GET', $urlGenerator->generate('app_task_list_done'));
@@ -40,6 +45,8 @@ final class TaskControllerTest extends WebTestCase
     public function testItShouldDisplayTasksListNotDonePage()
     {
         $client = self::createClient();
+
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'user1']));
 
         $urlGenerator = $client->getContainer()->get('router');
 
@@ -55,7 +62,9 @@ final class TaskControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $crawler = $client->request('GET', '/tasks/6/edit');
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'user1']));
+
+        $crawler = $client->request('GET', '/tasks/1/edit');
 
         $response = $client->getResponse();
 
@@ -70,9 +79,11 @@ final class TaskControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'user1']));
+
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/tasks/5/toggle');
+        $client->request('GET', '/tasks/1/toggle');
 
         $task = new Task();
 
@@ -84,9 +95,11 @@ final class TaskControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'admin1']));
+
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/tasks/7/delete');
+        $client->request('GET', '/tasks/1/delete');
 
         self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
     }

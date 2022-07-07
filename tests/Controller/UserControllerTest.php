@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class UserControllerTest extends WebTestCase
@@ -9,6 +10,8 @@ final class UserControllerTest extends WebTestCase
     public function testItShouldDisplayUserCreatePage()
     {
         $client = self::createClient();
+
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'admin1']));
 
         $urlGenerator = $client->getContainer()->get('router');
 
@@ -28,6 +31,8 @@ final class UserControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'admin1']));
+
         $urlGenerator = $client->getContainer()->get('router');
 
         $crawler = $client->request('GET', $urlGenerator->generate('app_user_list'));
@@ -40,6 +45,8 @@ final class UserControllerTest extends WebTestCase
     public function testItShouldDisplayUserEditPage()
     {
         $client = self::createClient();
+
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'admin1']));
 
         $crawler = $client->request('GET', '/users/1/edit');
 
@@ -57,9 +64,11 @@ final class UserControllerTest extends WebTestCase
     {
         $client = self::createClient();
 
+        $client->loginUser(static::getContainer()->get(UserRepository::class)->findOneBy(['username' => 'admin1']));
+
         $urlGenerator = $client->getContainer()->get('router');
 
-        $client->request('GET', '/users/17/delete');
+        $client->request('GET', '/users/1/delete');
 
         self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_user_list')));
     }
