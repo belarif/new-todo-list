@@ -8,14 +8,14 @@ use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
 {
-    public function test_it_should_return_value_id_property()
+    public function testItShouldReturnValueIdProperty()
     {
         $task = new Task();
 
         self::assertNull($task->getId());
     }
 
-    public function test_it_should_initialize_created_date_property()
+    public function testItShouldInitializeCreatedDateProperty()
     {
         $task = new Task();
 
@@ -23,14 +23,14 @@ class TaskTest extends TestCase
         self::assertSame((new DateTime())->format('Y-m-d'), $task->getCreatedAt()->format('Y-m-d'));
     }
 
-    public function test_it_should_initialize_is_done_property()
+    public function testItShouldInitializeIsDoneProperty()
     {
         $task = new Task();
 
         self::assertFalse($task->isDone());
     }
 
-    public function test_it_should_update_title_property()
+    public function testItShouldUpdateTitleProperty()
     {
         $task = new Task();
         self::assertEmpty($task->getTitle());
@@ -39,7 +39,7 @@ class TaskTest extends TestCase
         self::assertSame('le titre', $task->getTitle());
     }
 
-    public function test_it_should_update_content_property()
+    public function testItShouldUpdateContentProperty()
     {
         $task = new Task();
         self::assertEmpty($task->getContent());
@@ -48,19 +48,19 @@ class TaskTest extends TestCase
         self::assertSame('le contenu de la tache', $task->getContent());
     }
 
-    public function test_it_should_return_is_done_property_value()
+    public function testItShouldReturnIsDonePropertyValue()
     {
         $task = new Task();
 
         self::assertNotNull($task->isDone());
     }
 
-    public function test_it_should_update_is_done_property()
+    public function testItShouldUpdateIsDoneProperty()
     {
         $task = new Task();
 
         self::assertFalse($task->isDone());
         $task->toggle(true);
-        self::assertTrue((bool)$task->isDone());
+        self::assertTrue((bool) $task->isDone());
     }
 }

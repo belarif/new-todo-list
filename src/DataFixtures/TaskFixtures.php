@@ -11,7 +11,7 @@ class TaskFixtures extends Fixture
     public static array $tasks = [
         ['title' => 'première tache', 'content' => 'Contenu de la 1ère tache'],
         ['title' => 'deuxième tache', 'content' => 'Contenu de la 2ème tache'],
-        ['title' => 'troisième tache', 'content' => 'Contenu de la 3ème tache']
+        ['title' => 'troisième tache', 'content' => 'Contenu de la 3ème tache'],
     ];
 
     public function load(ObjectManager $manager): void

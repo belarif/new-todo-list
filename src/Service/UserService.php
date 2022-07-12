@@ -29,7 +29,7 @@ class UserService
      */
     public function userCreate(User $user)
     {
-        if($this->userRepository->findBy(['username' => $user->getUsername()])) {
+        if ($this->userRepository->findBy(['username' => $user->getUsername()])) {
             throw UserException::userExists($user);
         }
 
@@ -46,5 +46,3 @@ class UserService
         $this->userRepository->remove($user, true);
     }
 }
-
-

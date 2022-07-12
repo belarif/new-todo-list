@@ -7,14 +7,14 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
-    public function test_it_should_initialize_user_with_empty_id()
+    public function testItShouldInitializeUserWithEmptyId()
     {
         $user = new User();
 
         self::assertEmpty($user->getId());
     }
 
-    public function test_it_should_update_username_property()
+    public function testItShouldUpdateUsernameProperty()
     {
         $user = new User();
 
@@ -23,7 +23,7 @@ class UserTest extends TestCase
         self::assertSame('ocine', $user->getUsername());
     }
 
-    public function test_it_should_update_password_property()
+    public function testItShouldUpdatePasswordProperty()
     {
         $user = new User();
 
@@ -32,7 +32,7 @@ class UserTest extends TestCase
         self::assertSame('test', $user->getPassword());
     }
 
-    public function test_it_should_update_email_property()
+    public function testItShouldUpdateEmailProperty()
     {
         $user = new User();
 

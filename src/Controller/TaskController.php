@@ -7,15 +7,12 @@ use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use App\Service\TaskService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
-
 
 class TaskController extends AbstractController
 {
-
     #[Route('/tasks_done', name: 'app_task_list_done', methods: ['GET'])]
     public function listDoneAction(TaskService $taskService): Response
     {
@@ -28,7 +25,7 @@ class TaskController extends AbstractController
         return $this->render('task/tasks_list_not_done.html.twig', ['tasks' => $taskService->tasksList(), 'user' => $this->getUser()]);
     }
 
-    #[Route('/tasks/create', name: 'app_task_create', methods: ['GET','POST'])]
+    #[Route('/tasks/create', name: 'app_task_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request, TaskService $taskService)
     {
         $task = new Task();
@@ -48,7 +45,7 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET','POST'])]
+    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
     public function editAction(int $id, Request $request, TaskService $taskService, TaskRepository $taskRepository)
     {
         $task = $taskRepository->getTask($id);
@@ -62,7 +59,7 @@ class TaskController extends AbstractController
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
-            if($task->isDone()) {
+            if ($task->isDone()) {
                 return $this->redirectToRoute('app_task_list_done');
             }
 
@@ -100,5 +97,3 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_task_list_done');
     }
 }
-
-

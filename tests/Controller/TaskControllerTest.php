@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class TaskControllerTest extends WebTestCase
 {
-    public function test_it_should_display_task_create_page()
+    public function testItShouldDisplayTaskCreatePage()
     {
         $client = self::createClient();
 
@@ -23,7 +23,7 @@ final class TaskControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function test_it_should_display_tasks_list_done_page()
+    public function testItShouldDisplayTasksListDonePage()
     {
         $client = self::createClient();
 
@@ -37,7 +37,7 @@ final class TaskControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectLink('Créer une tâche'));
     }
 
-    public function test_it_should_display_tasks_list_not_done_page()
+    public function testItShouldDisplayTasksListNotDonePage()
     {
         $client = self::createClient();
 
@@ -51,7 +51,7 @@ final class TaskControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectLink('Créer une tâche'));
     }
 
-    public function test_it_should_display_edit_task_page()
+    public function testItShouldDisplayEditTaskPage()
     {
         $client = self::createClient();
 
@@ -66,7 +66,7 @@ final class TaskControllerTest extends WebTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function test_it_should_toggle_task()
+    public function testItShouldToggleTask()
     {
         $client = self::createClient();
 
@@ -80,7 +80,7 @@ final class TaskControllerTest extends WebTestCase
         self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
     }
 
-    public function test_it_should_delete_task()
+    public function testItShouldDeleteTask()
     {
         $client = self::createClient();
 

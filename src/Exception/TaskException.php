@@ -8,6 +8,6 @@ class TaskException extends Exception
 {
     public static function notTaskExists($id)
     {
-        return new self("La tache d'id " .$id. " n'existe pas");
+        return new self("La tache d'id ".$id." n'existe pas");
     }
 }

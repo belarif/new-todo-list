@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Task;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\TaskRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 class TaskService
 {

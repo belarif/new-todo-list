@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Service\UserService;
 use App\Repository\UserRepository;
+use App\Service\UserService;
 use Exception;
-use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
@@ -21,7 +20,7 @@ class UserController extends AbstractController
         return $this->render('user/list.html.twig', ['users' => $userService->usersList()]);
     }
 
-    #[Route('/users/create', name: 'app_user_create', methods: ['GET','POST'])]
+    #[Route('/users/create', name: 'app_user_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
     {
         $user = new User();
@@ -30,7 +29,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()
@@ -39,9 +37,7 @@ class UserController extends AbstractController
 
             try {
                 $userService->userCreate($user);
-
             } catch (Exception $e) {
-
                 $this->addFlash('existing_user', $e->getMessage());
 
                 return $this->redirectToRoute('app_user_create');
@@ -55,15 +51,14 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET','POST'])]
+    #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function editAction(
         int $id,
         Request $request,
         UserService $userService,
         UserPasswordHasherInterface $passwordHasher,
         UserRepository $userRepository
-    ){
-
+    ) {
         $user = $userRepository->getUser($id);
 
         $form = $this->createForm(UserType::class, $user);
@@ -99,5 +94,3 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_user_list');
     }
 }
-
-

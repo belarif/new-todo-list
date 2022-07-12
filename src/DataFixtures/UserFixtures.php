@@ -26,35 +26,31 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-
         $users = [
             [
                 'username' => 'admin1',
                 'email' => 'admin1@gmail.com',
                 'password' => 'admin1',
-                'role' => $this->roleRepository->findBy(['roleName' => RoleFixtures::ROLE_ADMIN])
+                'role' => $this->roleRepository->findBy(['roleName' => RoleFixtures::ROLE_ADMIN]),
             ],
             [
                 'username' => 'user1',
                 'email' => 'user1@gmail.com',
                 'password' => 'user1',
-                'role' => $this->roleRepository->findBy(['roleName' => RoleFixtures::ROLE_USER])
-            ]
+                'role' => $this->roleRepository->findBy(['roleName' => RoleFixtures::ROLE_USER]),
+            ],
         ];
 
-        foreach($users as $newUser) {
+        foreach ($users as $newUser) {
             $user = new User();
 
             $user->setUsername($newUser['username']);
             $user->setEmail($newUser['email']);
-            $user->setPassword($this->passwordHasher->hashPassword($user,$newUser['password']));
+            $user->setPassword($this->passwordHasher->hashPassword($user, $newUser['password']));
             $user->setRoles($newUser['role']);
 
             $manager->persist($user);
             $manager->flush();
-
         }
     }
 }
-
-
