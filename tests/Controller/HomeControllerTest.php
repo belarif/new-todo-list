@@ -2,19 +2,17 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
-final class HomeControllerTest extends WebTestCase
+final class HomeControllerTest extends TodoListFunctionalTestCase
 {
     public function testItShouldDisplayHomepage(): void
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClient(false);
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_homepage'));
-
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertSame(
