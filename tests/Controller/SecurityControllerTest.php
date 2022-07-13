@@ -2,19 +2,17 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
-final class SecurityControllerTest extends WebTestCase
+final class SecurityControllerTest extends TodoListFunctionalTestCase
 {
     public function testItShouldDisplayLoginPage(): void
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClient(false);
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/login');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_login'));
-
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertCount(1, $crawler->filter('form'));
