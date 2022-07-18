@@ -16,13 +16,13 @@ final class UserDbBuilder
     private User $user;
     private ContainerInterface $container;
     private UserRepository $userRepository;
-    private EntityManagerInterface $em;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(User $user, UserRepository $userRepository, ContainerInterface $container)
     {
         $this->user = $user;
         $this->container = $container;
-        $this->em = $container->get('doctrine.orm.default_entity_manager');
+        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
         $this->userRepository = $userRepository;
     }
 
@@ -61,7 +61,7 @@ final class UserDbBuilder
 
     private function save(): void
     {
-        $this->em->persist($this->user);
-        $this->em->flush();
+        $this->entityManager->persist($this->user);
+        $this->entityManager->flush();
     }
 }

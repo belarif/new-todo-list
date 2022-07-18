@@ -20,11 +20,11 @@ final class TaskFixtureBuilder
 
     public function createTask(Task $task): TaskDbBuilder
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $this->repository = $em->getRepository(Task::class);
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $this->repository = $entityManager->getRepository(Task::class);
 
-        $em->persist($task);
-        $em->flush();
+        $entityManager->persist($task);
+        $entityManager->flush();
 
         return new TaskDbBuilder(
             $task,

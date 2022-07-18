@@ -14,7 +14,7 @@ final class TaskDbBuilder
 {
     private Task $task;
     private ContainerInterface $container;
-    private EntityManagerInterface $em;
+    private EntityManagerInterface $entityManager;
     private TaskRepository $taskRepository;
     private DateTime $createdAt;
     private bool $isDone;
@@ -24,7 +24,7 @@ final class TaskDbBuilder
         $this->task = $task;
         $this->container = $container;
         $this->taskRepository = $taskRepository;
-        $this->em = $container->get('doctrine.orm.default_entity_manager');
+        $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
         $this->createdAt = new DateTime();
         $this->isDone = false;
     }
@@ -52,7 +52,7 @@ final class TaskDbBuilder
 
     private function save(): void
     {
-        $this->em->persist($this->task);
-        $this->em->flush();
+        $this->entityManager->persist($this->task);
+        $this->entityManager->flush();
     }
 }

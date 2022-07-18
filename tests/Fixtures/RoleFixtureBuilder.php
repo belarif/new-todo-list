@@ -21,8 +21,8 @@ final class RoleFixtureBuilder
 
     public function createRole(Role $role): RoleDbBuilder
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-        $this->repository = $em->getRepository(Role::class);
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $this->repository = $entityManager->getRepository(Role::class);
 
         if ($role->getRoleName()) {
             $roleName = $this->repository->findOneBy(['roleName' => $role->getRoleName()]);
@@ -32,8 +32,8 @@ final class RoleFixtureBuilder
             }
         }
 
-        $em->persist($role);
-        $em->flush();
+        $entityManager->persist($role);
+        $entityManager->flush();
 
         return new RoleDbBuilder(
             $role,

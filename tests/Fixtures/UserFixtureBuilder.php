@@ -21,13 +21,13 @@ final class UserFixtureBuilder
 
     public function createUser(User $user): UserDbBuilder
     {
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
+        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
         $hasher = $this->container->get(UserPasswordHasherInterface::class);
-        $this->repository = $em->getRepository(User::class);
+        $this->repository = $entityManager->getRepository(User::class);
 
         $user->setPassword($hasher->hashPassword($user, $user->getPassword()));
-        $em->persist($user);
-        $em->flush();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         return new UserDbBuilder(
             $user,
