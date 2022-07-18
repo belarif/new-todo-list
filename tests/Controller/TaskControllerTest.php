@@ -73,7 +73,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         $fixtures = $client->createFixtureBuilder();
 
         $task = $fixtures->task()
-            ->createTask(Task::fromFixture())
+            ->createTask((new Task())->fromFixture())
             ->getTask();
 
         self::assertTrue(!$task->isDone());
