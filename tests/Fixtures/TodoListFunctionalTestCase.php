@@ -16,13 +16,13 @@ class TodoListFunctionalTestCase extends WebTestCase
         $fixtures = $client->createFixtureBuilder();
 
         $role = $fixtures->role()
-            ->createRole(Role::fromFixture())
+            ->createRole((new Role())->fromFixture())
             ->setRoleName('ROLE_ADMIN')
             ->getRole();
 
         $user = $client->createFixtureBuilder()
             ->user()
-            ->createUser(User::fromFixture())
+            ->createUser((new User())->fromFixture())
             ->addRole($role)
             ->getUser();
 
