@@ -32,4 +32,9 @@ class Role
 
         return $this;
     }
+
+    public static function fromFixture(): self
+    {
+        return (new Role())->setRoleName(uniqid());
+    }
 }

@@ -3,19 +3,17 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Task;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
-final class TaskControllerTest extends WebTestCase
+final class TaskControllerTest extends TodoListFunctionalTestCase
 {
     public function testItShouldDisplayTaskCreatePage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/tasks/create');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_task_create'));
-
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertNotNull($crawler->selectLink('Retour à la liste des tâches'));
@@ -25,13 +23,11 @@ final class TaskControllerTest extends WebTestCase
 
     public function testItShouldDisplayTasksListDonePage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/tasks_done');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_task_list_done'));
-
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertNotNull($crawler->selectLink('Créer une tâche'));
@@ -39,13 +35,11 @@ final class TaskControllerTest extends WebTestCase
 
     public function testItShouldDisplayTasksListNotDonePage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/tasks_not_done');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_task_list_not_done'));
-
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertNotNull($crawler->selectLink('Créer une tâche'));
@@ -53,11 +47,17 @@ final class TaskControllerTest extends WebTestCase
 
     public function testItShouldDisplayEditTaskPage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $crawler = $client->request('GET', '/tasks/6/edit');
+        $fixtures = $client->createFixtureBuilder();
 
-        $response = $client->getResponse();
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture())
+            ->getTask();
+
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/edit');
+
+        $crawler = $client->getCrawler();
 
         self::assertTrue($response->isOk());
         self::assertCount(1, $crawler->filter('form'));
@@ -68,26 +68,34 @@ final class TaskControllerTest extends WebTestCase
 
     public function testItShouldToggleTask()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $fixtures = $client->createFixtureBuilder();
 
-        $client->request('GET', '/tasks/5/toggle');
-
-        $task = new Task();
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture())
+            ->getTask();
 
         self::assertTrue(!$task->isDone());
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
+
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/toggle');
+
+        self::assertTrue($task->isDone());
+        self::assertTrue($response->isRedirect('/tasks_done'));
     }
 
     public function testItShouldDeleteTask()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $fixtures = $client->createFixtureBuilder();
 
-        $client->request('GET', '/tasks/7/delete');
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture())
+            ->getTask();
 
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_task_list_done')));
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/delete');
+
+        self::assertTrue($response->isRedirect('/tasks_done'));
     }
 }

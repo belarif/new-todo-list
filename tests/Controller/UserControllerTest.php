@@ -2,19 +2,18 @@
 
 namespace App\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
-final class UserControllerTest extends WebTestCase
+final class UserControllerTest extends TodoListFunctionalTestCase
 {
     public function testItShouldDisplayUserCreatePage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/users/create');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_user_create'));
+        $crawler = $client->getCrawler();
 
-        $response = $client->getResponse();
         self::assertTrue($response->isOk());
         self::assertCount(1, $crawler->filter('form'));
         self::assertCount(1, $crawler->filter('input[id=user_username]'));
@@ -26,24 +25,24 @@ final class UserControllerTest extends WebTestCase
 
     public function testItShouldDisplayUsersListPage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/users');
 
-        $crawler = $client->request('GET', $urlGenerator->generate('app_user_list'));
+        $crawler = $client->getCrawler();
 
-        $response = $client->getResponse();
         self::assertTrue($response->isOk());
         self::assertSame('Liste des utilisateurs', $crawler->filter('h1')->first()->text());
     }
 
     public function testItShouldDisplayUserEditPage()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $crawler = $client->request('GET', '/users/1/edit');
+        $response = $client->sendRequest('GET', '/users/'.$client->getCurrentLoggedUser()->getId().'/edit');
 
-        $response = $client->getResponse();
+        $crawler = $client->getCrawler();
+
         self::assertTrue($response->isOk());
         self::assertCount(1, $crawler->filter('form'));
         self::assertCount(1, $crawler->filter('input[id=user_username]'));
@@ -55,12 +54,10 @@ final class UserControllerTest extends WebTestCase
 
     public function testItShouldDeleteUser()
     {
-        $client = self::createClient();
+        $client = $this->createTodoListClientWithLoggedUser();
 
-        $urlGenerator = $client->getContainer()->get('router');
+        $response = $client->sendRequest('GET', '/users/'.$client->getCurrentLoggedUser()->getId().'/delete');
 
-        $client->request('GET', '/users/17/delete');
-
-        self::assertTrue($client->getResponse()->isRedirect($urlGenerator->generate('app_user_list')));
+        self::assertTrue($response->isRedirect('/users'));
     }
 }

@@ -95,4 +95,11 @@ class Task
 
         return $this;
     }
+
+    public static function fromFixture(): self
+    {
+        return (new Task())
+            ->setTitle(uniqid())
+            ->setContent(uniqid());
+    }
 }

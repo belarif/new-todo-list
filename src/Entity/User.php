@@ -176,4 +176,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public static function fromFixture(): self
+    {
+        return (new User())
+            ->setUsername(uniqid())
+            ->setPassword(uniqid())
+            ->setEmail(uniqid().'@todolist.com');
+    }
 }
