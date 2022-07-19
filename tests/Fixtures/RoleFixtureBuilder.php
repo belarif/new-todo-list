@@ -6,6 +6,7 @@ namespace App\Tests\Fixtures;
 
 use App\Entity\Role;
 use App\Repository\RoleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class RoleFixtureBuilder
@@ -14,16 +15,17 @@ final class RoleFixtureBuilder
 
     private RoleRepository $repository;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+        $this->repository = $this->entityManager->getRepository(Role::class);
     }
 
     public function createRole(Role $role): RoleDbBuilder
     {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $this->repository = $entityManager->getRepository(Role::class);
-
         if ($role->getRoleName()) {
             $roleName = $this->repository->findOneBy(['roleName' => $role->getRoleName()]);
 
@@ -32,12 +34,13 @@ final class RoleFixtureBuilder
             }
         }
 
-        $entityManager->persist($role);
-        $entityManager->flush();
+        $this->entityManager->persist($role);
+        $this->entityManager->flush();
 
         return new RoleDbBuilder(
             $role,
             $this->repository,
+            $this->entityManager,
             $this->container
         );
     }

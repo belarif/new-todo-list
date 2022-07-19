@@ -13,12 +13,12 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserDbBuilder
 {
-    private User $user;
+    private ?User $user;
     private ContainerInterface $container;
     private UserRepository $userRepository;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(User $user, UserRepository $userRepository, ContainerInterface $container)
+    public function __construct(?User $user, UserRepository $userRepository, ContainerInterface $container)
     {
         $this->user = $user;
         $this->container = $container;
@@ -54,7 +54,7 @@ final class UserDbBuilder
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }

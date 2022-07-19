@@ -63,9 +63,9 @@ final class TodoListClient
         return $security->getToken()->getUser();
     }
 
-    public function sendRequest(string $method, $url): Response
+    public function sendRequest(string $method, $url, $parameters = []): Response
     {
-        $this->crawler = $this->_client->request($method, $url);
+        $this->crawler = $this->_client->request($method, $url, $parameters);
 
         return $this->_client->getResponse();
     }
@@ -73,5 +73,10 @@ final class TodoListClient
     public function getCrawler(): Crawler
     {
         return $this->crawler;
+    }
+
+    public function getBrowser(): KernelBrowser
+    {
+        return $this->_client;
     }
 }
