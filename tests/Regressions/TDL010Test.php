@@ -7,7 +7,7 @@ use App\Tests\TodoListFunctionalTestCase;
 
 final class TDL010Test extends TodoListFunctionalTestCase {
 	public function test_it_should_create_user(): void {
-		$client = $this->createTodoListClientWithLoggedUser();
+		$client = $this->createTodoListClientWithLoggedUser(false);
 		$user = $client->getCurrentLoggedUser();
 
 		self::assertNotNull($user);
@@ -40,5 +40,20 @@ final class TDL010Test extends TodoListFunctionalTestCase {
 		self::assertTrue($response->isOk());
 		self::assertSame('Liste des utilisateurs', $crawler->filter('h1')->first()->text());
 		self::assertCount(4, $crawler->filter('tbody tr'));
+	}
+
+	public function test_it_should_save_user_on_db(): void {
+		$client = $this->createTodoListClientWithLoggedUser();
+		$fixtures = $client->createFixtureBuilder();
+
+		$user = User::fromFixture();
+		// self::assertNull($user->getId());
+
+		$user = $fixtures->user()
+			->createUser($user)
+			->getUser();
+
+
+		self::assertNotNull($user->getId());
 	}
 }

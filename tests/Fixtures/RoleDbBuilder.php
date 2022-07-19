@@ -11,12 +11,17 @@ final class RoleDbBuilder {
 	private Role $role;
 	private ContainerInterface $container;
 	private RoleRepository $roleRepository;
-	private EntityManagerInterface $em;
+	private EntityManagerInterface $entityManager;
 
-	public function __construct(Role $role, RoleRepository $roleRepository, ContainerInterface $container) {
+	public function __construct(
+		Role $role,
+		RoleRepository $roleRepository,
+		EntityManagerInterface $entityManager,
+		ContainerInterface $container
+	) {
 		$this->role = $role;
 		$this->container = $container;
-		$this->em = $container->get('doctrine.orm.default_entity_manager');
+		$this->entityManager = $entityManager;
 		$this->roleRepository = $roleRepository;
 	}
 
@@ -32,7 +37,7 @@ final class RoleDbBuilder {
 	}
 
 	private function save(): void {
-		$this->em->persist($this->role);
-		$this->em->flush();
+		$this->entityManager->persist($this->role);
+		$this->entityManager->flush();
 	}
 }
