@@ -96,10 +96,11 @@ class Task
         return $this;
     }
 
-    public static function fromFixture(): self
+    public static function fromFixture($user): self
     {
         return (new Task())
             ->setTitle(uniqid())
-            ->setContent(uniqid());
+            ->setContent(uniqid())
+            ->setUser($user);
     }
 }

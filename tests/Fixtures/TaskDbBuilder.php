@@ -45,6 +45,14 @@ final class TaskDbBuilder
         return $this;
     }
 
+    public function setDone(bool $done): self
+    {
+        $this->task->toggle($done);
+        $this->save();
+
+        return $this;
+    }
+
     public function getTask()
     {
         return $this->task;
