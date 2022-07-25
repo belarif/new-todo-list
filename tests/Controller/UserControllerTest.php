@@ -7,9 +7,11 @@ use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
 final class UserControllerTest extends TodoListFunctionalTestCase
 {
+    private const ROLE_ADMIN = 'ROLE_ADMIN';
+
     public function testItShouldAccessOnCreateUserPageWhenUserIsLogged()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $response = $client->sendRequest('GET', '/users/create');
 
         self::assertTrue($response->isOk());
@@ -25,7 +27,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldCreateUser(): void
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         $user = $fixtures->user()
@@ -58,7 +60,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDisplayUsersListPage()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         // loggedUser + 3 new users = 4
@@ -76,7 +78,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDisplayUserEditPage()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         $user = $fixtures
@@ -100,7 +102,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldUpdateUser(): void
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         $user = $fixtures->user()
@@ -138,7 +140,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDeleteUser()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         $user = $fixtures->user()
