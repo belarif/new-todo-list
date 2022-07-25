@@ -7,9 +7,11 @@ use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
 final class TaskControllerTest extends TodoListFunctionalTestCase
 {
+    private const ROLE_ADMIN = 'ROLE_ADMIN';
+
     public function testItShouldDisplayTaskCreatePageWhenUserIsLogged()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $response = $client->sendRequest('GET', '/tasks/create');
 
         self::assertTrue($response->isOk());
@@ -25,7 +27,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDisplayTasksListDonePage()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
         $logedUser = $client->getCurrentLoggedUser();
@@ -43,7 +45,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDisplayTasksListNotDonePage()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
         $fixtures = $client->createFixtureBuilder();
 
@@ -62,7 +64,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDisplayEditTaskPage()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
         $fixtures = $client->createFixtureBuilder();
         $logedUser = $client->getCurrentLoggedUser();
@@ -84,7 +86,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldToggleTask()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
         $fixtures = $client->createFixtureBuilder();
         $logedUser = $client->getCurrentLoggedUser();
@@ -103,7 +105,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
     public function testItShouldDeleteTask()
     {
-        $client = $this->createTodoListClientWithLoggedUser();
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
         $fixtures = $client->createFixtureBuilder();
         $logedUser = $client->getCurrentLoggedUser();
