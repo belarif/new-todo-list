@@ -26,7 +26,7 @@ final class SecurityControllerTest extends TodoListFunctionalTestCase
     {
         $client = $this->createTodoListClient(true);
 
-        $client->sendRequest('GET', '/login');
+        $response = $client->sendRequest('GET', '/login');
 
         $crawler = $client->getCrawler();
 
@@ -44,8 +44,9 @@ final class SecurityControllerTest extends TodoListFunctionalTestCase
 
         $client->submitForm($form);
 
-        $client->followRedirect();
+        $client->redirectTo();
 
-        // self::assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        self::assertTrue($response->isRedirect());
+        self::assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
     }
 }

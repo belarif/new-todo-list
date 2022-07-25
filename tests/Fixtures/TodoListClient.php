@@ -75,8 +75,13 @@ final class TodoListClient
         return $this->crawler;
     }
 
-    public function getBrowser(): KernelBrowser
+    public function submitForm($button)
     {
-        return $this->_client;
+        return $this->_client->submit($button);
+    }
+
+    public function redirectTo()
+    {
+        return $this->_client->followRedirect();
     }
 }
