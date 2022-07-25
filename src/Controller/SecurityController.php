@@ -35,7 +35,7 @@ class SecurityController extends AbstractController
     public function accessDeniedHandler(): Response
     {
         return $this->render('error/access_denied.html.twig', [
-            'response' => "Vous n'etes pas autorisé à accéder à cette page",
+            'response' => 'Vous n’êtes pas autorisé à accéder à cette page',
         ]);
     }
 }

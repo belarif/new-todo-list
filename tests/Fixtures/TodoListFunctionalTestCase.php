@@ -10,14 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class TodoListFunctionalTestCase extends WebTestCase
 {
-    public function createTodoListClientWithLoggedUser(bool $transactional = true): TodoListClient
+    public function createTodoListClientWithLoggedUser(bool $transactional = true, $userRole): TodoListClient
     {
         $client = $this->createTodoListClient($transactional);
         $fixtures = $client->createFixtureBuilder();
 
         $role = $fixtures->role()
             ->createRole((new Role())->fromFixture())
-            ->setRoleName('ROLE_ADMIN')
+            ->setRoleName($userRole)
             ->getRole();
 
         $user = $client->createFixtureBuilder()
