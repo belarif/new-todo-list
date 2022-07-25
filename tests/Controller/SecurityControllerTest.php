@@ -31,4 +31,13 @@ final class SecurityControllerTest extends TodoListFunctionalTestCase
 
         self::assertTrue($response->isRedirect('/access_denied'));
     }
+
+    public function testItShouldDisplayAccessDeniedPage()
+    {
+        $client = $this->createTodoListClient(false);
+
+        $response = $client->sendRequest('GET', '/access_denied');
+
+        self::assertTrue($response->isOk());
+    }
 }
