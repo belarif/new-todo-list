@@ -2,11 +2,12 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
 use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
 final class SecurityControllerTest extends TodoListFunctionalTestCase
 {
+    private const ROLE_USER = 'ROLE_USER';
+
     public function testItShouldDisplayLoginPage(): void
     {
         $client = $this->createTodoListClient(false);
@@ -22,31 +23,12 @@ final class SecurityControllerTest extends TodoListFunctionalTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function testItShouldLoginTheUser()
+    public function testItShouldDisplayUnauthorizedAccessPageToUsersWhoDoNotHaveAccess()
     {
-        $client = $this->createTodoListClient(true);
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_USER);
 
-        $response = $client->sendRequest('GET', '/login');
+        $response = $client->sendRequest('GET', '/users');
 
-        $crawler = $client->getCrawler();
-
-        $form = $crawler->selectButton('Se connecter')->form();
-
-        $fixtures = $client->createFixtureBuilder();
-
-        $user = $fixtures
-            ->user()
-            ->createUser((new User())->fromFixture())
-            ->getUser();
-
-        $form['_username'] = $user->getUsername();
-        $form['_password'] = $user->getPassword();
-
-        $client->submitForm($form);
-
-        $client->redirectTo();
-
-        self::assertTrue($response->isRedirect());
-        self::assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        self::assertTrue($response->isRedirect('/access_denied'));
     }
 }
