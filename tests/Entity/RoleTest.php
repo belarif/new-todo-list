@@ -2,23 +2,32 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Builder\RoleBuilder;
 use App\Entity\Role;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class RoleTest extends TestCase
 {
-    public function testItShouldInitializeRoleWithEmptyId()
+    public function testItShouldThrowExceptionWhenTryAccessToNotInitializePropertyId()
     {
-        $role = new Role();
+        $role = RoleBuilder::newRole();
 
-        self::assertEmpty($role->getId());
+        self::expectException(Throwable::class);
+        self::expectExceptionMessage(sprintf(
+            'Typed property %s::$id must not be accessed before initialization',
+            Role::class,
+        ));
+
+        $role->getRole()->getId();
     }
 
-    public function testItShouldUpdateRoleNameProperty()
+    public function testItShouldHydrateRoleNameProperty()
     {
-        $role = new Role();
+        $role = RoleBuilder::newRole()
+            ->setRoleName('ROLE_USER')
+            ->getRole();
 
-        $role->setRoleName('ROLE_ADMIN');
-        self::assertSame('ROLE_ADMIN', $role->getRoleName());
+        self::assertNotNull($role->getRoleName());
     }
 }
