@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Builder\UserBuilder;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +17,13 @@ class UserTest extends TestCase
 
     public function test_it_should_update_username_property()
     {
-        $user = new User();
+		$user = UserBuilder::newUser()
+			->setUsername($username = uniqid())
+			->getUer();
 
-        self::assertEmpty($user->getUsername());
+		$user = User::fromFixture();
+
+        self::assertSame($username, $user->getUsername());
         $user->setUsername('ocine');
         self::assertSame('ocine', $user->getUsername());
     }
