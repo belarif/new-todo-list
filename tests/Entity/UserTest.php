@@ -2,42 +2,69 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Builder\RoleBuilder;
+use App\Entity\Builder\UserBuilder;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class UserTest extends TestCase
 {
-    public function testItShouldInitializeUserWithEmptyId()
+    public function testItShouldThrowExceptionWhenTryAccessToNotInitializePropertyId()
     {
-        $user = new User();
+        $user = UserBuilder::newUser();
 
-        self::assertEmpty($user->getId());
+        self::expectException(Throwable::class);
+        self::expectExceptionMessage(sprintf(
+            'Typed property %s::$id must not be accessed before initialization',
+            User::class,
+        ));
+
+        $user->getUer()->getId();
     }
 
-    public function testItShouldUpdateUsernameProperty()
+    public function testItShouldHydrateUsernameProperty()
     {
-        $user = new User();
+        $user = UserBuilder::newUser()
+            ->setUsername(uniqid())
+            ->getUer();
 
-        self::assertEmpty($user->getUsername());
-        $user->setUsername('ocine');
-        self::assertSame('ocine', $user->getUsername());
+        self::assertNotNull($user->getUsername());
     }
 
-    public function testItShouldUpdatePasswordProperty()
+    public function testItShouldHydratePasswordProperty()
     {
-        $user = new User();
+        $user = UserBuilder::newUser()
+            ->setPassword(uniqid())
+            ->getUer();
 
-        self::assertEmpty($user->getPassword());
-        $user->setPassword('test');
-        self::assertSame('test', $user->getPassword());
+        self::assertNotNull($user->getPassword());
     }
 
-    public function testItShouldUpdateEmailProperty()
+    public function testItShouldHydrateEmailProperty()
     {
-        $user = new User();
+        $user = UserBuilder::newUser()
+            ->setEmail(uniqid())
+            ->getUer();
 
-        self::assertEmpty($user->getEmail());
-        $user->setEmail('example@gmail.com');
-        self::assertSame('example@gmail.com', $user->getEmail());
+        self::assertNotNull($user->getEmail());
+    }
+
+    public function testItShouldAssignRolesToUser()
+    {
+        $roles = [
+            RoleBuilder::newRole()
+                ->setRoleName('ROLE_USER')
+                ->getRole(),
+            RoleBuilder::newRole()
+                ->setRoleName('ROLE_ADMIN')
+                ->getRole(),
+        ];
+
+        $user = UserBuilder::newUser()
+            ->setRoles($roles)
+            ->getUer();
+
+        self::assertNotNull($user->getRoles());
     }
 }
