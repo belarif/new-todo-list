@@ -13,4 +13,12 @@ class RoleTest extends TestCase
 
         self::assertEmpty($role->getId());
     }
+
+    public function testItShouldUpdateRoleNameProperty()
+    {
+        $role = new Role();
+
+        $role->setRoleName('ROLE_ADMIN');
+        self::assertSame('ROLE_ADMIN', $role->getRoleName());
+    }
 }
