@@ -28,7 +28,6 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
     public function testItShouldCreateTask()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
-
         $client->sendRequest('GET', '/tasks/create');
 
         $logedUser = $client->getCurrentLoggedUser();
@@ -46,7 +45,6 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
             ],
             'POST'
         );
-
         $client->redirectTo();
 
         self::assertSelectorTextContains('div.alert.alert-success', 'Superbe ! La tâche a bien été créée.');
@@ -109,6 +107,37 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertCount(1, $crawler->filter('input[id=task_title]'));
         self::assertCount(1, $crawler->filter('textarea[id=task_content]'));
         self::assertNotNull($crawler->selectButton('submit'));
+    }
+
+    public function testItShouldUpdateTask()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->getTask();
+
+        $client->sendRequest('GET', '/tasks/'.$task->getId().'/edit');
+
+        $updateTask = $fixtures->task()
+            ->loadFrom($task->getTitle())
+            ->setContent('modified content')
+            ->getTask();
+
+        $client->sendForm(
+            'submit',
+            [
+                'task[title]' => $updateTask->getTitle(),
+                'task[content]' => $updateTask->getContent(),
+            ],
+            'POST'
+        );
+        $client->redirectTo();
+
+        self::assertSelectorTextContains('div.alert.alert-success', 'Superbe ! La tâche a bien été modifiée.');
     }
 
     public function testItShouldToggleTask()
