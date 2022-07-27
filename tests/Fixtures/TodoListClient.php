@@ -75,17 +75,17 @@ final class TodoListClient
         return $this->crawler;
     }
 
-    public function submitForm($button)
+    public function sendForm($button, $values, $method): Crawler
     {
-        return $this->_client->submit($button);
+        return $this->_client->submitForm($button, $values, $method);
     }
 
-    public function redirectTo()
+    public function redirectTo(): Crawler
     {
         return $this->_client->followRedirect();
     }
 
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->_client->getResponse();
     }

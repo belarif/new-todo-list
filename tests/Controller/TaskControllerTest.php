@@ -25,6 +25,33 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertTrue($response->isRedirect('http://localhost/login'));
     }
 
+    public function testItShouldCreateTask()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $client->sendRequest('GET', '/tasks/create');
+
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $fixtures = $client->createFixtureBuilder();
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->getTask();
+
+        $client->sendForm(
+            'submit',
+            [
+                'task[title]' => $task->getTitle(),
+                'task[content]' => $task->getContent(),
+            ],
+            'POST'
+        );
+
+        $client->redirectTo();
+
+        self::assertSelectorTextContains('div.alert.alert-success', 'Superbe ! La tâche a bien été créée.');
+    }
+
     public function testItShouldDisplayTasksListDonePage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
