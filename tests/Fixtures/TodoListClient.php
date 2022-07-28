@@ -84,9 +84,4 @@ final class TodoListClient
     {
         return $this->_client->followRedirect();
     }
-
-    public function getResponse(): Response
-    {
-        return $this->_client->getResponse();
-    }
 }

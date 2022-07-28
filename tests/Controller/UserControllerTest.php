@@ -63,7 +63,6 @@ final class UserControllerTest extends TodoListFunctionalTestCase
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
         $fixtures = $client->createFixtureBuilder();
 
-        // loggedUser + 3 new users = 4
         $fixtures->user()->createUser(User::fromFixture());
         $fixtures->user()->createUser(User::fromFixture());
         $fixtures->user()->createUser(User::fromFixture());
@@ -73,7 +72,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
         self::assertTrue($response->isOk());
         self::assertSame('Liste des utilisateurs', $crawler->filter('h1')->first()->text());
-        self::assertGreaterThan(4, $crawler->filter('tbody tr')->count());
+        self::assertGreaterThan(3, $crawler->filter('tbody tr')->count());
     }
 
     public function testItShouldDisplayUserEditPage()

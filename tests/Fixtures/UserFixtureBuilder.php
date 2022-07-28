@@ -26,10 +26,7 @@ final class UserFixtureBuilder
     public function createUser(User $user): UserDbBuilder
     {
         $hasher = $this->container->get(UserPasswordHasherInterface::class);
-
         $user->setPassword($hasher->hashPassword($user, $user->getPassword()));
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
