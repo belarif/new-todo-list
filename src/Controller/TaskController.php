@@ -37,7 +37,7 @@ class TaskController extends AbstractController
             $task->setUser($this->getUser());
             $taskService->taskCreate($task);
 
-            $this->addFlash('success', 'La tâche a été bien été ajoutée.');
+            $this->addFlash('success', 'La tâche a bien été créée.');
 
             return $this->redirectToRoute('app_task_list_not_done');
         }

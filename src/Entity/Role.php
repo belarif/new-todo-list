@@ -11,7 +11,7 @@ class Role
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    protected ?int $id;
 
     #[ORM\Column(type: 'string', length: 80)]
     private ?string $roleName;
@@ -31,5 +31,10 @@ class Role
         $this->roleName = $roleName;
 
         return $this;
+    }
+
+    public static function fromFixture(): self
+    {
+        return (new Role())->setRoleName(uniqid());
     }
 }
