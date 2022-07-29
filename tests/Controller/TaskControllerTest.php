@@ -169,9 +169,11 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         $task = $fixtures->task()
             ->createTask((new Task())->fromFixture($logedUser))
             ->getTask();
+        self::assertNotNull($task->getId());
 
         $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/delete');
+        self::assertNull($task->getId());
 
-        self::assertTrue($response->isRedirect('/tasks_done'));
+        self::assertTrue($response->isRedirect('/tasks_not_done'));
     }
 }
