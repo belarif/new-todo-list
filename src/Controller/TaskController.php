@@ -80,6 +80,12 @@ class TaskController extends AbstractController
         $task->toggle(!$task->isDone());
         $taskService->toggleTask($task);
 
+        if (!$task->isDone()) {
+            $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme non terminée.', $task->getTitle()));
+
+            return $this->redirectToRoute('app_task_list_not_done');
+        }
+
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
         return $this->redirectToRoute('app_task_list_done');
@@ -93,6 +99,10 @@ class TaskController extends AbstractController
         $taskService->deleteTask($task);
 
         $this->addFlash('success', 'La tâche a bien été supprimée.');
+
+        if (!$task->isDone()) {
+            return $this->redirectToRoute('app_task_list_not_done');
+        }
 
         return $this->redirectToRoute('app_task_list_done');
     }
