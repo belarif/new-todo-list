@@ -176,7 +176,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertSelectorTextContains('a.btn.btn-secondary', 'Retour à la liste des tâches non faites');
     }
 
-    public function testItShouldToggleTask()
+    public function testItShouldToggleTaskToDoneAndRedirectToTasksDonePage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
@@ -193,6 +193,26 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
 
         self::assertTrue($task->isDone());
         self::assertTrue($response->isRedirect('/tasks_done'));
+    }
+
+    public function testItShouldToggleTaskToNotDoneAndRedirectToTasksNotDonePage()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->setDone(true)
+            ->getTask();
+
+        self::assertTrue($task->isDone());
+
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/toggle');
+
+        self::assertTrue(!$task->isDone());
+        self::assertTrue($response->isRedirect('/tasks_not_done'));
     }
 
     public function testItShouldDeleteTask()
