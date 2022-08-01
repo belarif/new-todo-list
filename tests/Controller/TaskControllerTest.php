@@ -109,7 +109,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function testItShouldUpdateTask()
+    public function testItShouldUpdateTaskNotDone()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
@@ -127,6 +127,8 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
             ->setContent('modified content')
             ->getTask();
 
+        self::assertFalse($updateTask->isDone());
+
         $client->sendForm(
             'submit',
             [
@@ -137,7 +139,41 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         );
         $client->redirectTo();
 
-        self::assertSelectorTextContains('div.alert.alert-success', 'Superbe ! La tâche a bien été modifiée.');
+        self::assertSelectorTextContains('a.btn.btn-secondary', 'Retour à la liste des tâches faites');
+    }
+
+    public function testItShouldUpdateTaskDone()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->getTask();
+
+        $client->sendRequest('GET', '/tasks/'.$task->getId().'/edit');
+
+        $updateTask = $fixtures->task()
+            ->loadFrom($task->getTitle())
+            ->setContent('modified content')
+            ->setDone(true)
+            ->getTask();
+
+        self::assertTrue($updateTask->isDone());
+
+        $client->sendForm(
+            'submit',
+            [
+                'task[title]' => $updateTask->getTitle(),
+                'task[content]' => $updateTask->getContent(),
+            ],
+            'POST'
+        );
+        $client->redirectTo();
+
+        self::assertSelectorTextContains('a.btn.btn-secondary', 'Retour à la liste des tâches non faites');
     }
 
     public function testItShouldToggleTask()
