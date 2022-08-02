@@ -2,7 +2,6 @@
 
 namespace App\Tests\Controller;
 
-use App\Entity\User;
 use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
 final class SecurityControllerTest extends TodoListFunctionalTestCase
