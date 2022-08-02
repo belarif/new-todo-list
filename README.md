@@ -40,3 +40,10 @@ After executing the command, the project will be copied to the 'www' directory
                 php -S localhost:8000 -t public/
 
 Homepage : http://localhost:8000/
+
+### Generation level of code coverage
+                vendor/bin/phpunit --coverage-html public/test-coverage
+
+### visualization of code coverage on browser
+                http://localhost:8000/test-coverage/index.html
+
