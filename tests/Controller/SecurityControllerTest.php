@@ -24,31 +24,6 @@ final class SecurityControllerTest extends TodoListFunctionalTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function testItShouldLoginTheUser()
-    {
-        $client = $this->createTodoListClient(true);
-        $client->sendRequest('GET', '/login');
-
-        $fixtures = $client->createFixtureBuilder();
-        $user = $fixtures
-            ->user()
-            ->createUser((new User())->fromFixture())
-            ->getUser();
-
-        $client->sendForm(
-            'submit',
-            [
-                '_username' => $user->getUsername(),
-                '_password' => $user->getPassword(),
-            ],
-            'POST'
-        );
-        $client->loginUser($user);
-        $client->redirectTo();
-
-        self::assertSelectorTextContains('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
-    }
-
     public function testItShouldDisplayUnauthorizedAccessPageToUsersWhoDoNotHaveAccess()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_USER);
