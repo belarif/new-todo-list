@@ -9,7 +9,7 @@ Feel free to propose changes in a pull request.
 ### 1. Install the project locally
 To install the project, go to the file by clicking on link [README.md](https://github.com/belarif/new-todo-list/blob/121ebc24e7e30a3273f56254ff67d4478199b43e/README.md)
 
-    N.B: For an easy understanding of your modifications by other contributors, explain well in the description of your contribution
+    N.B: For an easy understanding of your modifications by other contributors, explain well in your contribution description
 
 ### 2. Choose or create issue 
 If you want to contribute to an issue already raised, find the issue in the issues page.
