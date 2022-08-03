@@ -13,14 +13,14 @@ class TaskBuilder
         $this->task = new Task();
     }
 
-    public function setTitle(String $title): self
+    public function setTitle(string $title): self
     {
         $this->task->setTitle($title);
 
         return $this;
     }
 
-    public function setContent(String $content): self
+    public function setContent(string $content): self
     {
         $this->task->setContent($content);
 
