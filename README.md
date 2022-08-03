@@ -24,9 +24,8 @@ After executing the command, the project will be copied to the 'www' directory
 3.1 Create your database locally   
 3.2 Modify the .env file to adapt access to your SGBD  
 3.3 Create your database schema:
-####
-                php bin/console doctrine:migrations:migrate
 
+                php bin/console doctrine:migrations:migrate
 ### 4.  Loading fixtures
                 php bin/console doctrine:fixtures:load
 
@@ -37,14 +36,11 @@ After executing the command, the project will be copied to the 'www' directory
 
 ### 6.  Run application
                 php -S localhost:8000 -t public/
-
 Homepage : http://localhost:8000/
 
 ### 7.  Tests
-
 #### 7.1    Generation level of code coverage
                 vendor/bin/phpunit --coverage-html public/test-coverage
-
 #### 7.2    visualization of code coverage on browser
                 http://localhost:8000/test-coverage/index.html
 
