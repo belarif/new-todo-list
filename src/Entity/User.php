@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -85,14 +84,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles->toArray());
     }
 
-    public function getRole(): Collection
-    {
-        return $this->roles;
-    }
-
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = new ArrayCollection($roles);
 
         return $this;
     }
@@ -135,43 +129,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->roles->contains($role)) {
             $this->roles[] = $role;
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): self
-    {
-        $this->roles->removeElement($role);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Task>
-     */
-    public function getTasks(): Collection
-    {
-        return $this->tasks;
-    }
-
-    public function addTask(Task $task): self
-    {
-        if (!$this->tasks->contains($task)) {
-            $this->tasks[] = $task;
-            $task->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTask(Task $task): self
-    {
-        if ($this->tasks->removeElement($task)) {
-            // set the owning side to null (unless already changed)
-            if ($task->getUser() === $this) {
-                $task->setUser(null);
-            }
         }
 
         return $this;

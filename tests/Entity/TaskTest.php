@@ -2,65 +2,75 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Builder\TaskBuilder;
 use App\Entity\Task;
-use DateTime;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class TaskTest extends TestCase
 {
-    public function testItShouldReturnValueIdProperty()
+    public function testItShouldThrowExceptionWhenTryAccessToNotInitializePropertyId()
     {
-        $task = new Task();
+        $task = TaskBuilder::newTask();
 
-        self::assertNull($task->getId());
+        self::expectException(Throwable::class);
+        self::expectExceptionMessage(sprintf(
+            'Typed property %s::$id must not be accessed before initialization',
+            Task::class,
+        ));
+
+        $task->getTask()->getId();
     }
 
     public function testItShouldInitializeCreatedDateProperty()
     {
-        $task = new Task();
+        $task = TaskBuilder::newTask()
+            ->getTask();
 
         self::assertNotNull($task->getCreatedAt());
-        self::assertSame((new DateTime())->format('Y-m-d'), $task->getCreatedAt()->format('Y-m-d'));
     }
 
     public function testItShouldInitializeIsDoneProperty()
     {
-        $task = new Task();
+        $task = TaskBuilder::newTask()
+            ->getTask();
 
         self::assertFalse($task->isDone());
     }
 
-    public function testItShouldUpdateTitleProperty()
+    public function testItShouldHydrateTitleProperty()
     {
-        $task = new Task();
-        self::assertEmpty($task->getTitle());
+        $task = TaskBuilder::newTask()
+            ->setTitle(uniqid())
+            ->getTask();
 
-        $task->setTitle('le titre');
-        self::assertSame('le titre', $task->getTitle());
+        self::assertNotNull($task->getTitle());
     }
 
-    public function testItShouldUpdateContentProperty()
+    public function testItShouldHydrateContentProperty()
     {
-        $task = new Task();
-        self::assertEmpty($task->getContent());
+        $task = TaskBuilder::newTask()
+            ->setContent(uniqid())
+            ->getTask();
 
-        $task->setContent('le contenu de la tache');
-        self::assertSame('le contenu de la tache', $task->getContent());
+        self::assertNotNull($task->getContent());
     }
 
     public function testItShouldReturnIsDonePropertyValue()
     {
-        $task = new Task();
+        $task = TaskBuilder::newTask()
+            ->getTask();
 
         self::assertNotNull($task->isDone());
     }
 
-    public function testItShouldUpdateIsDoneProperty()
+    public function testItShouldToggleIsDoneProperty()
     {
-        $task = new Task();
-
+        $task = TaskBuilder::newTask()
+            ->getTask();
         self::assertFalse($task->isDone());
+
         $task->toggle(true);
-        self::assertTrue((bool) $task->isDone());
+        self::assertTrue($task->isDone());
     }
 }

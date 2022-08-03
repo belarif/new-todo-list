@@ -109,7 +109,7 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
-    public function testItShouldUpdateTask()
+    public function testItShouldUpdateTaskNotDoneAndRedirectToTasksNotDonePage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
@@ -127,6 +127,8 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
             ->setContent('modified content')
             ->getTask();
 
+        self::assertFalse($updateTask->isDone());
+
         $client->sendForm(
             'submit',
             [
@@ -137,10 +139,44 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         );
         $client->redirectTo();
 
-        self::assertSelectorTextContains('div.alert.alert-success', 'Superbe ! La tâche a bien été modifiée.');
+        self::assertSelectorTextContains('a.btn.btn-secondary', 'Retour à la liste des tâches faites');
     }
 
-    public function testItShouldToggleTask()
+    public function testItShouldUpdateTaskDoneAndRedirectToTasksDonePage()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->getTask();
+
+        $client->sendRequest('GET', '/tasks/'.$task->getId().'/edit');
+
+        $updateTask = $fixtures->task()
+            ->loadFrom($task->getTitle())
+            ->setContent('modified content')
+            ->setDone(true)
+            ->getTask();
+
+        self::assertTrue($updateTask->isDone());
+
+        $client->sendForm(
+            'submit',
+            [
+                'task[title]' => $updateTask->getTitle(),
+                'task[content]' => $updateTask->getContent(),
+            ],
+            'POST'
+        );
+        $client->redirectTo();
+
+        self::assertSelectorTextContains('a.btn.btn-secondary', 'Retour à la liste des tâches non faites');
+    }
+
+    public function testItShouldToggleTaskToDoneAndRedirectToTasksDonePage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
@@ -159,7 +195,27 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
         self::assertTrue($response->isRedirect('/tasks_done'));
     }
 
-    public function testItShouldDeleteTask()
+    public function testItShouldToggleTaskToNotDoneAndRedirectToTasksNotDonePage()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->setDone(true)
+            ->getTask();
+
+        self::assertTrue($task->isDone());
+
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/toggle');
+
+        self::assertTrue(!$task->isDone());
+        self::assertTrue($response->isRedirect('/tasks_not_done'));
+    }
+
+    public function testItShouldDeleteTaskNotDoneAndRedirectToTasksNotDonePage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
 
@@ -170,8 +226,33 @@ final class TaskControllerTest extends TodoListFunctionalTestCase
             ->createTask((new Task())->fromFixture($logedUser))
             ->getTask();
 
+        self::assertNotNull($task->getId());
+        self::assertTrue(!$task->isDone());
+
         $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/delete');
 
+        self::assertNull($task->getId());
+        self::assertTrue($response->isRedirect('/tasks_not_done'));
+    }
+
+    public function testItShouldDeleteTaskDoneAndRedirectToTasksDonePage()
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+
+        $fixtures = $client->createFixtureBuilder();
+        $logedUser = $client->getCurrentLoggedUser();
+
+        $task = $fixtures->task()
+            ->createTask((new Task())->fromFixture($logedUser))
+            ->setDone(true)
+            ->getTask();
+
+        self::assertTrue($task->isDone());
+        self::assertNotNull($task->getId());
+
+        $response = $client->sendRequest('GET', '/tasks/'.$task->getId().'/delete');
+
+        self::assertNull($task->getId());
         self::assertTrue($response->isRedirect('/tasks_done'));
     }
 }

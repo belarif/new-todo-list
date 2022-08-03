@@ -99,6 +99,7 @@
         }
     },
     "require-dev": {
+        "behat/behat": "^3.11",
         "dama/doctrine-test-bundle": "^7.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",

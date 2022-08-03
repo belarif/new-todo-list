@@ -58,6 +58,33 @@ final class UserControllerTest extends TodoListFunctionalTestCase
         self::assertSame($email, $newUser->getEmail());
     }
 
+    public function testItShouldRedirectUserWhenTryingToCreateExistingUser(): void
+    {
+        $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
+        $fixtures = $client->createFixtureBuilder();
+
+        $user = $fixtures->user()
+            ->createUser(User::fromFixture())
+            ->getUser();
+        self::assertNotNull($user);
+
+        $response = $client->sendRequest(
+            'POST',
+            '/users/create',
+            [
+                'user' => [
+                    'username' => $user->getUsername(),
+                    'password' => [
+                        'first' => $password = uniqid('password'),
+                        'second' => $password,
+                    ],
+                    'email' => uniqid().'@todolist.com',
+                ],
+            ]
+        );
+        self::assertTrue($response->isRedirect('/users/create'));
+    }
+
     public function testItShouldDisplayUsersListPage()
     {
         $client = $this->createTodoListClientWithLoggedUser(true, self::ROLE_ADMIN);
