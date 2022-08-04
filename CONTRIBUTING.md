@@ -11,10 +11,10 @@ To install the project, go to the file by clicking on link [README.md](https://g
 
     N.B: For an easy understanding of your modifications by other contributors, explain well in your contribution description
 
-### 2. Choose or create issue 
+### 2. Choose or create an issue 
 If you want to contribute to an issue already raised, find the issue in the issues page.
 
-If issue does not exist, create a new issue.
+If issue does not exist, create it.
 For the creation of the issue, respect the following naming:  TDLn°: title of the issue
             
             example:    TDL43: code optimization
