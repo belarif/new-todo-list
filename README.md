@@ -1,6 +1,6 @@
 ## Installing the project
 ### 1.  Local project copy
-Click on the "code" button, then on the HTTPS section which displays the following url :
+Click on the "code" button at the top, then on the HTTPS section which displays the following url :
 ####
                 https://github.com/belarif/new-todo-list.git 
 
