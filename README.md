@@ -1,6 +1,6 @@
 ## Installing the project
 ### 1.  Local project copy
-Click on the "code" button, then on the HTTPS section which displays the following url :
+Click on the "code" button at the top, then on the HTTPS section which displays the following url :
 ####
                 https://github.com/belarif/new-todo-list.git 
 
@@ -21,8 +21,10 @@ After executing the command, the project will be copied to the 'www' directory
                 composer install
 
 ### 3.  Creation of the database
-3.1 Create your database locally   
-3.2 Modify the .env file to adapt access to your SGBD  
+3.1 To adapt access to your SGBD, in the .env file configure the variable DATABASE_URL  
+3.2 Create your database
+
+                php bin/console doctrine:database:create
 3.3 Create your database schema:
 
                 php bin/console doctrine:migrations:migrate
