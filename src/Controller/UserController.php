@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\UserCreateType;
+use App\Form\UserEditType;
 use App\Repository\UserRepository;
 use App\Service\UserService;
 use Exception;
@@ -24,7 +25,7 @@ class UserController extends AbstractController
     public function createAction(Request $request, UserService $userService, UserPasswordHasherInterface $passwordHasher)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserCreateType::class, $user);
 
         $form->handleRequest($request);
 
@@ -61,7 +62,7 @@ class UserController extends AbstractController
     ) {
         $user = $userRepository->getUser($id);
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
 
         $form->handleRequest($request);
 
