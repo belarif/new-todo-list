@@ -52,7 +52,7 @@ class UserController extends AbstractController
         return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/users/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/users/{id}/edit', name: 'app_user_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editAction(
         int $id,
         Request $request,
@@ -83,7 +83,7 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 
-    #[Route('/users/{id}/delete', name: 'app_user_delete')]
+    #[Route('/users/{id}/delete', name: 'app_user_delete', requirements: ['id' => '\d+'])]
     public function deleteAction(int $id, UserService $userService, UserRepository $userRepository)
     {
         $user = $userRepository->getUser($id);
