@@ -45,7 +45,7 @@ class TaskController extends AbstractController
         return $this->render('task/create.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
+    #[Route('/tasks/{id}/edit', name: 'app_task_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editAction(int $id, Request $request, TaskService $taskService, TaskRepository $taskRepository)
     {
         $task = $taskRepository->getTask($id);
@@ -72,7 +72,7 @@ class TaskController extends AbstractController
         ]);
     }
 
-    #[Route('/tasks/{id}/toggle', name: 'app_task_toggle')]
+    #[Route('/tasks/{id}/toggle', name: 'app_task_toggle', requirements: ['id' => '\d+'])]
     public function toggleTaskAction(int $id, TaskService $taskService, TaskRepository $taskRepository)
     {
         $task = $taskRepository->getTask($id);
@@ -91,7 +91,7 @@ class TaskController extends AbstractController
         return $this->redirectToRoute('app_task_list_done');
     }
 
-    #[Route('/tasks/{id}/delete', name: 'app_task_delete')]
+    #[Route('/tasks/{id}/delete', name: 'app_task_delete', requirements: ['id' => '\d+'])]
     public function deleteTaskAction(int $id, TaskService $taskService, TaskRepository $taskRepository)
     {
         $task = $taskRepository->getTask($id);

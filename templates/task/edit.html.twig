@@ -3,9 +3,7 @@
 {% block body %}
     <div class="row">
         {{ form_start(form, {'action' : path('app_task_edit', { 'id' : task.id })}) }}
-        {% for role in user.roles %}
-            {{ form_row(form.role, { 'label' : 'Roles :' }) }}
-        {% endfor %}
+        {{ form_widget(form) }}
 
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success mt-2" id="submit">Modifier</button>
