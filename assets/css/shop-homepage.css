@@ -4,9 +4,13 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 
-.slide-image {width: 100%;}
+.slide-image {
+    width: 100%;
+}
 
-.carousel-holder{margin-bottom: 30px;}
+.carousel-holder {
+    margin-bottom: 30px;
+}
 
 .carousel-control,
 .item {
