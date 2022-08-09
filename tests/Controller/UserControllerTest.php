@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
 use App\Tests\Fixtures\TodoListFunctionalTestCase;
 
@@ -39,7 +40,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
             'POST',
             '/users/create',
             [
-                'user' => [
+                'user_create' => [
                     'username' => $username,
                     'password' => [
                         'first' => $password = uniqid('password'),
@@ -72,7 +73,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
             'POST',
             '/users/create',
             [
-                'user' => [
+                'user_create' => [
                     'username' => $user->getUsername(),
                     'password' => [
                         'first' => $password = uniqid('password'),
@@ -119,10 +120,7 @@ final class UserControllerTest extends TodoListFunctionalTestCase
 
         self::assertTrue($response->isOk());
         self::assertCount(1, $crawler->filter('form'));
-        self::assertCount(1, $crawler->filter('input[id=user_username]'));
-        self::assertCount(1, $crawler->filter('input[id=user_password_first]'));
-        self::assertCount(1, $crawler->filter('input[id=user_password_second]'));
-        self::assertCount(1, $crawler->filter('input[id=user_email]'));
+        self::assertCount(1, $crawler->filter('select[id=user_edit_role]'));
         self::assertNotNull($crawler->selectButton('submit'));
     }
 
@@ -135,33 +133,22 @@ final class UserControllerTest extends TodoListFunctionalTestCase
             ->createUser(User::fromFixture())
             ->getUser();
 
-        $newUsername = uniqid('new_username');
-        $newEmail = 'email@gmail.com';
-        self::assertNotSame($newUsername, $user->getUsername());
-        self::assertNotSame($newEmail, $user->getUsername());
+        $role = $fixtures->role()
+            ->createRole(Role::fromFixture())
+            ->getRole();
 
         $response = $client->sendRequest(
             'POST',
             '/users/'.$user->getId().'/edit',
             [
-                'user' => [
-                    'username' => $newUsername,
-                    'email' => $newEmail,
-                    'password' => [
-                        'first' => $user->getPassword(),
-                        'second' => $user->getPassword(),
+                'user_edit' => [
+                    'role' => [
+                        $role->getId(),
                     ],
                 ],
             ]
         );
-        self::assertTrue($response->isRedirect());
-        self::assertNotNull(
-            $newUser = $fixtures->user()
-                ->loadFromId($user->getId())
-                ->getUser()
-        );
-        self::assertSame($newEmail, $newUser->getEmail());
-        self::assertSame($newUsername, $newUser->getUsername());
+        self::assertTrue($response->isRedirect('/users'));
     }
 
     public function testItShouldDeleteUser()

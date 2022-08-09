@@ -1,5 +1,9 @@
 ## Installing the project
-### 1.  Local project copy
+### 1.  PHP and Composer
+1.1 PHP-version >= 8.1  
+1.2 Composer-version >= 2.2
+
+### 2.  Local project copy
 Click on the "code" button at the top, then on the HTTPS section which displays the following url :
 ####
                 https://github.com/belarif/new-todo-list.git 
@@ -17,32 +21,32 @@ On the same path, type the following command to clone the project :
 
 After executing the command, the project will be copied to the 'www' directory
 
-### 2.  Installing dependencies
+### 3.  Installing dependencies
                 composer install
 
-### 3.  Creation of the database
-3.1 To adapt access to your SGBD, in the .env file configure the variable DATABASE_URL  
-3.2 Create your database
+### 4.  Creation of the database
+4.1 To adapt access to your SGBD, in the .env file configure the variable DATABASE_URL  
+4.2 Create your database
 
                 php bin/console doctrine:database:create
 3.3 Create your database schema:
 
                 php bin/console doctrine:migrations:migrate
-### 4.  Loading fixtures
+### 5.  Loading fixtures
                 php bin/console doctrine:fixtures:load
 
-### 5.  Installation of public resources
-5.1 Install yarn: `npm install --global yarn`   
-5.2 Install encore: `yarn install`  
-5.3 Upload public files: `yarn build`
+### 6.  Installation of public resources
+6.1 Install yarn: `npm install --global yarn`   
+6.2 Install encore: `yarn install`  
+6.3 Upload public files: `yarn build`
 
-### 6.  Run application
+### 7.  Run application
                 php -S localhost:8000 -t public/
 Homepage : http://localhost:8000/
 
-### 7.  Tests
-#### 7.1    Generation level of code coverage
+### 8.  Tests
+#### 8.1    Generation level of code coverage
                 vendor/bin/phpunit --coverage-html public/test-coverage
-#### 7.2    visualization of code coverage on browser
+#### 8.2    visualization of code coverage on browser
                 http://localhost:8000/test-coverage/index.html
 
