@@ -92,9 +92,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
     public function getRole(): Collection
     {
         return $this->roles;
