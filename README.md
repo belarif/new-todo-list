@@ -57,6 +57,11 @@ After executing the command, the project will be copied to the 'www' directory
 
 Homepage : http://localhost:8000/
 
+Identifiants:
+
+    - username: admin1
+    - password: admin1
+
 ### 8. Tests
 
 #### 8.1    Generation level of code coverage
